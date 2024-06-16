@@ -1,13 +1,11 @@
 import unittest
 
+import shared/utils
+
 import main
 
-proc memOpen(restrict: pointer, len: csize_t, modes: cstring): File {.
-  importc: "fmemopen",
-  header: "<stdio.h>"
-.}
 
-test "Redirect to stderr":
+test "redirect to stderr":
   var outBuffer: array[1024, cchar]
   var errBuffer: array[1024, cchar]
 
@@ -21,6 +19,7 @@ test "Redirect to stderr":
   let exitCode = runProcess(
     memStdOut,
     memStdErr,
+    "./chroot",
     "/usr/local/bin/docker-explorer",
     ["echo_stderr", errorMessage]
   )
@@ -28,7 +27,8 @@ test "Redirect to stderr":
   check cast[cstring](addr outBuffer[0]) == ""
   check cast[cstring](addr errBuffer[0]) == errorMessage & "\n"
 
-test "Redirect to stdout":
+
+test "redirect to stdout":
   var outBuffer: array[1024, cchar]
   var errBuffer: array[1024, cchar]
 
@@ -42,6 +42,7 @@ test "Redirect to stdout":
   let exitCode = runProcess(
     memStdOut,
     memStdErr,
+    "./chroot",
     "/usr/local/bin/docker-explorer",
     ["echo", standardMessage]
   )
