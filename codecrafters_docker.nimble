@@ -11,4 +11,5 @@ bin           = @["codecrafters_docker"]
 
 # Dependencies
 
-requires "nim >= 2.1.1"
+# CodeCrafters uses very old version of Nim
+requires "nim >= 1.0.6"

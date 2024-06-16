@@ -1,8 +1,7 @@
 # Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 
-import std/[osproc, streams, enumutils, strformat]
+import std/[osproc, streams, strformat, os]
 
-from os import commandLineParams
 from strtabs import StringTableRef;
 
 import chroot
@@ -54,6 +53,11 @@ proc runProcess*(
 when isMainModule:
   let command = commandLineParams()[2]
   let args = commandLineParams()[3..^1]
+
+  const localBinPath = "/usr/local/bin"
+  const fullFilePath = localBinPath & "/docker-explorer"
+  createDir("./chroot" & localBinPath)
+  copyFileWithPermissions(fullFilePath, "./chroot" & fullFilePath)
 
   let exitCode = runProcess(stdout, stderr, "./chroot", command, args)
   quit(exitCode)
