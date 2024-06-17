@@ -6,7 +6,6 @@ from strtabs import StringTableRef;
 
 import chroot
 
-
 proc runProcess*(
   stdOutHandle: File,
   stdErrorHandle: File,
@@ -17,9 +16,13 @@ proc runProcess*(
   env: StringTableRef = nil,
   options: set[osproc.ProcessOption] = {},
 ): int =
-  let status = changeRoot(chrootPath)
-  if status != Ok:
-    raise newException(IOError, fmt"Unable to call chroot {status}")
+  let unshareStatus = unshareProcess(@[CloneNewPid])
+  if unshareStatus != Ok:
+    raise newException(IOError, fmt"Unable to call unshare {unshareStatus}")
+
+  let chrootStatus = changeRoot(chrootPath)
+  if chrootStatus != Ok:
+    raise newException(IOError, fmt"Unable to call chroot {chrootStatus}")
 
   var p = startProcess(
     command,
