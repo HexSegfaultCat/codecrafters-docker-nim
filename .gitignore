@@ -1,6 +1,8 @@
-# Ignore chroot
-chroot/*
-!chroot/.gitkeep
+# Ignore downloaded images and created containers
+runtime-data/containers/*
+!runtime-data/containers/.gitkeep
+runtime-data/images/*
+!runtime-data/images/.gitkeep
 
 # Ignore built test binaries (files without extension)
 tests/**/*

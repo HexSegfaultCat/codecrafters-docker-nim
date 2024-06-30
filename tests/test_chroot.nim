@@ -1,10 +1,9 @@
 import unittest
-import std/strutils
-
 import shared/utils
 
-import main
+import std/strutils
 
+import container, dockerhub
 
 test "try to access /home in chroot":
   var outBuffer: array[1024, cchar]
@@ -17,11 +16,11 @@ test "try to access /home in chroot":
   defer: memStdErr.close()
 
   let exitCode = runProcess(
-    memStdOut,
-    memStdErr,
-    "./chroot",
-    "/usr/local/bin/docker-explorer",
-    ["ls", "/home"]
+    stdOutHandle = memStdOut,
+    stdErrorHandle = memStdErr,
+    chrootPath = ContainersPath & "/codecrafters-docker-explorer",
+    command = "/usr/local/bin/docker-explorer",
+    args = ["ls", "/home"],
   )
   check exitCode == 2
 

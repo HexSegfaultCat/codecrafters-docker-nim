@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CHROOT_LOCAL_BIN_DIR="./chroot/usr/local/bin"
+CHROOT_LOCAL_BIN_DIR="./runtime-data/containers/codecrafters-docker-explorer/usr/local/bin"
 FULL_FILE_PATH="${CHROOT_LOCAL_BIN_DIR}/docker-explorer"
 
 if [ ! -f "${FULL_FILE_PATH}" ]; then
